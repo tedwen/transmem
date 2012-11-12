@@ -106,4 +106,5 @@ This project was developed originally for a Chinese-based public web service but
 
 ### License
 
-This release is licensed under the ASL.
+This release is licensed under the Apache License, Version 2.0. See the LICENSE file for details.
+
