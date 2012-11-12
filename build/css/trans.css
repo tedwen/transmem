@@ -1,0 +1,66 @@
+img {
+	border:0;
+}
+.outer,.inner {
+	border-spacing: 1px;
+	background-color: #CC6600;
+}
+.header {
+	border-spacing: 0;
+}
+.header td {
+	background: #FFFFCC;
+	padding: 2px 5px 0px 2px;
+}
+table.outer td, table.inner td {
+	background: #FFFFFF;
+	font-size: 14px;
+	vertical-align: top;
+}
+td.accept {
+	vertical-align: middle;
+}
+div#examples span {
+	cursor: hand;
+	cursor: pointer;
+	color: blue;
+	text-decoration: underline
+}
+table.outer div {
+	margin: 5px 5px 5px 5px;
+}
+.header img,.header img,.translate img {
+	cursor: hand;
+	cursor: pointer;
+}
+#p_src,#p_tgt {
+	height: 200px;
+	overflow: auto;
+}
+#s_src {
+	height: 100px;
+	overflow: auto;
+}
+#s_edit {
+	width: 100%;
+}
+span.src,span.tgt {
+	text-decoration: underline;
+	color: #663300;
+}
+div#split {
+ position: absolute;
+ top: 50px;
+ left: 50px;
+ display: none;
+ z-index: 10;
+}
+div#examples ul.ex li.exs {
+	list-style-type: circle;
+	font-color: #C66A00;
+}
+div#examples ul.ex li.ext {
+	list-style-type: square;
+	border-bottom: 1px solid gray;
+	font-color: #003399;
+}

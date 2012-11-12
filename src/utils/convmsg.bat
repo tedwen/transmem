@@ -1,0 +1,2 @@
+python gb2unicode.py ../../web/WEB-INF/classes/Messages_zh_GB.properties ../../web/WEB-INF/classes/Messages_zh.properties
+copy ..\..\web\WEB-INF\classes\Messages.properties ..\..\web\WEB-INF\classes\Messages_en.properties

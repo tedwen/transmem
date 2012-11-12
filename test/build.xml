@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<project basedir="." default="compile">
+	<property file="build.properties"/>
+	<property environment="env"/>
+
+	<property name="src.dir" location="java"/>
+	<property name="build.dir" location="build"/>
+	<property name="build.classes.dir" location="${build.dir}/classes"/>
+	<property name="tm.lib.dir" location="../build/WEB-INF/lib"/>
+	<property name="project.name" value="transmem"/>
+
+	<path id="test.classpath">
+		<pathelement location="${build.classes.dir}"/>
+		<pathelement location="${tm.lib.dir}/${project.name}.jar"/>
+		<pathelement location="${junit.jar}"/>
+		<pathelement location="${jdbc.jar}"/>
+	</path>
+
+	<target name="init">
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.classes.dir}"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+	</target>
+
+	<target name="compile" depends="init" description="compile all unit test source code">
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="true" classpathref="test.classpath" />
+	</target>
+
+	<target name="run-tests" depends="compile" description="run all unit tests">
+		<junit haltonfailure="yes" fork="yes" haltonerror="yes" showoutput="yes">
+			<formatter type="plain" usefile="false"/>
+			<classpath refid="test.classpath"/>
+			<batchtest>
+				<fileset dir="${build.classes.dir}" casesensitive="no">
+					<include name="**/*Test.class"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="run-test" depends="compile" description="run a given Test class">
+		<property name="classname" value="EnglishSegmenterTest"/>
+		<junit haltonfailure="false" fork="yes" haltonerror="false" showoutput="yes">
+			<formatter type="plain" usefile="false"/>
+			<classpath refid="test.classpath"/>
+			<test name="${classname}"/>
+		</junit>
+	</target>
+
+</project>

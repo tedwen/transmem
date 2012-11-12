@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<tmx version="1.4">
+ <header
+  creationtool="tm"
+  creationtoolversion="1.0"
+  datatype="PlainText"
+  segtype="sentence"
+  adminlang="en-us"
+  srclang="EN"
+  o-tmf="Transmem"
+  creationdate="2007"
+  creationid="TM"
+  changedate="2007">
+  <prop type="Domain">00</prop>
+  <prop type="Source">(0)Unknown</prop>
+ </header>
+ <body>
+<tu tuid="1">
+	<tuv xml:lang="EN">
+		<seg>As I had plenty of money I was able to help her.</seg>
+	</tuv>
+	<tuv xml:lang="ZH">
+		<seg>我钱很宽裕，能帮助她。</seg>
+	</tuv>
+</tu>
+<tu tuid="2">
+	<tuv xml:lang="EN">
+		<seg>He is an able man.</seg>
+	</tuv>
+	<tuv xml:lang="ZH">
+		<seg>他是一个能人。</seg>
+	</tuv>
+</tu>
+<tu tuid="3">
+	<tuv xml:lang="EN">
+		<seg>I dropped my key somewhere about here.</seg>
+	</tuv>
+	<tuv xml:lang="ZH">
+		<seg>我把钥匙掉在这附近某个地方了。</seg>
+	</tuv>
+</tu>
+<tu tuid="4">
+	<tuv xml:lang="EN">
+		<seg>Tell me all about it.</seg>
+	</tuv>
+	<tuv xml:lang="ZH">
+		<seg>告诉我关于这件事的一切。</seg>
+	</tuv>
+</tu>
+<tu tuid="5">
+	<tuv xml:lang="EN">
+		<seg>He was about to start.</seg>
+	</tuv>
+	<tuv xml:lang="ZH">
+		<seg>他即将动身。</seg>
+	</tuv>
+</tu>
+<tu tuid="6">
+	<tuv xml:lang="EN">
+		<seg>It is about six o'clock now.</seg>
+	</tuv>
+	<tuv xml:lang="ZH">
+		<seg>现在是六点钟左右。</seg>
+	</tuv>
+</tu>
+<tu tuid="7">
+	<tuv xml:lang="EN">
+		<seg>The children are rushing about.</seg>
+	</tuv>
+	<tuv xml:lang="ZH">
+		<seg>孩子们到处乱闯。</seg>
+	</tuv>
+</tu>
+<tu tuid="8">
+	<tuv xml:lang="EN">
+		<seg>My bedroom is just above.</seg>
+	</tuv>
+	<tuv xml:lang="ZH">
+		<seg>我的卧室就在上面。</seg>
+	</tuv>
+</tu>
+<tu tuid="9">
+	<tuv xml:lang="EN">
+		<seg>The sun rose above the horizon.</seg>
+	</tuv>
+	<tuv xml:lang="ZH">
+		<seg>太阳升到地平线上。</seg>
+	</tuv>
+</tu>
+<tu tuid="10">
+	<tuv xml:lang="EN">
+		<seg>This book is above me.</seg>
+	</tuv>
+	<tuv xml:lang="ZH">
+		<seg>这本书对我来说是太难了。</seg>
+	</tuv>
+</tu>
+<tu tuid="11">
+	<tuv xml:lang="EN">
+		<seg>His conduct has always been above suspicion.</seg>
+	</tuv>
+	<tuv xml:lang="ZH">
+		<seg>他的行为一直无可质疑。</seg>
+	</tuv>
+</tu>
+<tu tuid="12">
+	<tuv xml:lang="EN">
+		<seg>The police are not allowed to accept rewards.</seg>
+	</tuv>
+	<tuv xml:lang="ZH">
+		<seg>警察是不允许接受酬金的。</seg>
+	</tuv>
+</tu>
+</body>
+</tmx>

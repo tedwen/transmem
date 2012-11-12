@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<database name="transmem">
+
+<tables>
+
+	<sequence name="S_ENZH" increment="1" minvalue="1" start="1" maxvalue="9223372036854775807">
+		<annotation>Sequence with bigint to be used by T_ENZH.F_SID</annotation>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,UPDATE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</sequence>
+
+	<table name="T_ENZH">
+		<annotation>English-Chinese sentences</annotation>
+		<fields>
+			<field name="F_SID" type="long" null="false" default="nextval('S_ENZH')">Sentence ID as long</field>
+			<field name="F_Source" type="string" size="1024">English sentence</field>
+			<field name="F_Target" type="string" size="1024">Chinese sentence</field>
+			<field name="F_Domain" type="char" size="2" default="'00'">domain, default=general</field>
+			<field name="F_Owner" type="int" default="0">provider of this entry</field>
+			<field name="F_Permit" type="int" default="0">0=Public,positive=GroupID,-1=Owner</field>
+			<field name="F_From" type="int" default="0">article ID if any, 0=unknown, negative from dictionaries</field>
+		</fields>
+		<primary-key name="englishchinese_pk">
+			<pk field="F_SID" />
+		</primary-key>
+		<indices>
+			<index name="ENZH_Domain_Index" field="F_Domain" />
+			<index name="ENZH_Permit_Index" field="F_Permit" />
+		</indices>
+		<queries>
+			<query name="UnitsByOwner">
+				<annotation>Query translation units by owner</annotation>
+				<struct name="Transunit">
+					<var type="long" name="sid"/>
+					<var type="string" name="source"/>
+					<var type="string" name="target"/>
+				</struct>
+				<params>
+					<param type="int" var="owner"/>
+				</params>
+				<sql><![CDATA[select F_SID,F_Source,F_Target from T_ENZH where F_Owner=?1]]></sql>
+			</query>
+		</queries>
+		<updates>
+			<update name="deleteBySource">
+				<annotation>Delete all sentences from a source</annotation>
+				<params>
+					<param type="int" var="source" />
+				</params>
+				<sql><![CDATA[delete from T_ENZH where F_From=?1]]></sql>
+			</update>
+			<update name="deleteByOwner">
+				<annotation>Delete all sentences from an owner</annotation>
+				<params>
+					<param type="int" var="owner" />
+				</params>
+				<sql><![CDATA[delete from T_ENZH where F_Owner=?1]]></sql>
+			</update>
+			<update name="deleteBySourceAndOwner">
+				<annotation>Delete all sentences by an owner from this source</annotation>
+				<params>
+					<param type="int" var="owner" />
+					<param type="int" var="source" />
+				</params>
+				<sql><![CDATA[delete from T_ENZH where F_Owner=?1 and F_From=?2]]></sql>
+			</update>
+		</updates>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,DELETE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</table>
+
+	<table name="T_ENZH_ENX">
+		<annotation>English word index for English-Chinese sentences</annotation>
+		<fields>
+			<field name="F_Word" type="string" size="64" null="false">English word as index</field>
+			<field name="F_SID" type="long" null="false">Sentence ID</field>
+			<field name="F_Offset" type="short" default="0">Which word in the source sentence</field>
+		</fields>
+		<primary-key name="enzh_enx_pk">
+			<pk field="F_Word" />
+			<pk field="F_SID" />
+		</primary-key>
+		<foreign-keys>
+			<fk field="F_SID" ref-table="T_ENZH" ref-field="F_SID" ondelete="cascade" />
+		</foreign-keys>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,DELETE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</table>
+
+	<table name="T_ENZH_ZHX">
+		<annotation>Chinese word index for English-Chinese sentences</annotation>
+		<fields>
+			<field name="F_Word" type="string" size="64" null="false">Chinese word as index</field>
+			<field name="F_SID" type="long" null="false">Sentence ID</field>
+			<field name="F_Offset" type="short" default="0">Which word in the target sentence</field>
+		</fields>
+		<primary-key name="enzh_zhx_pk">
+			<pk field="F_Word" />
+			<pk field="F_SID" />
+		</primary-key>
+		<foreign-keys>
+			<fk field="F_SID" ref-table="T_ENZH" ref-field="F_SID" ondelete="cascade" />
+		</foreign-keys>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,DELETE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</table>
+
+</tables>
+
+</database>

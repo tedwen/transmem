@@ -1,0 +1,28 @@
+Use a normal class and not extend from junit.framework.TestCase.
+Use the Test annotation to mark a method as a test method. 
+To use the Test annotation, we need to import org.junit.Test
+Use one of the assert methods. There is no difference between 
+the old assert methods and the new assert methods. An easy way 
+to use the assert method is to do a static import as shown by 
+point 2 in the code above.
+Run the test using JUnit4TestAdapter. If you want to learn more
+about JUnit4TestAdapter, keep reading ahead.
+
+Run the tests
+
+Unfortunately, our favorite development environments are still 
+unaware of JUnit 4. JUnit4Adapter enables compatibility with the 
+old runners so that the new JUnit 4 tests can be run with the old runners. 
+The suite method in the diagram above illustrates the use of JUnit4Adapter.
+Alternatively, you can use the JUnitCore class in the org.junit.runner 
+package. JUnit 4 runner can also run tests written using the old JUnit. 
+To run the tests using the JUnitCore class via the command line, type:
+
+java org.junit.runner.JUnitCore LibraryTest
+
+Set up and tear down
+
+The new JUnit provides two new annotations for set up and tear down:
+
+@Before: Method annotated with @Before executes before every test.
+@After: Method annotated with @After executes after every test.

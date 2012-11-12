@@ -1,0 +1,16 @@
+EN	English
+ZH	Chinese
+FR	French
+DE	German
+ES	Spanish
+IT	Italian
+JA	Japanese
+RU	Russian
+DA	Danish
+NL	Dutch
+FI	Finnish
+NO	Norwegian
+PT	Portuguese
+SV	Swedish
+KO	Korean
+TH	Thai

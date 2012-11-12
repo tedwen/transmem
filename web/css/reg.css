@@ -1,0 +1,26 @@
+table#reg_tab {
+	background : #E4EFF5;
+}
+table#reg_tab td {
+	padding : 5px;
+	font-size : small;
+	border-bottom : 1px solid lightgray;
+}
+td.reg_tdr {
+	background : #F0F6F9;
+	color : #6A9CCE;
+	border-left : 1px solid lightgray;
+}
+div#reg_div {
+	border : 1px solid #CDEBFE;
+	padding : 5px 20px;
+}
+span#nameused {
+	color : red;
+}
+span#namenotused {
+	color : green;
+}
+div#msg_area {
+	color : red;
+}

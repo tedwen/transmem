@@ -1,0 +1,1141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<database name="transmem">
+
+<tables>
+
+  <table name="T_LangCodes">
+	<annotation>
+	  Language codes defined by ISO-639.1 (2-character codes)
+	</annotation>
+	<fields>
+	  <field name="F_Code" type="char" size="2" null="false">such as ZH, EN</field>
+	  <field name="F_Name" type="string" size="16">Name of the language</field>
+	  <field name="F_Family" type="string" size="24">Language family</field>
+	</fields>
+	<primary-key name="langcode_pk">
+	  <pk field="F_Code" />
+	</primary-key>
+	<users>
+		<user type="GROUP" name="Users" right="SELECT" />
+		<user type="GROUP" name="Admins" right="ALL" />
+	</users>
+	<data>
+		<row>
+			<col field="F_Code">EN</col>
+			<col field="F_Name">English</col>
+			<col field="F_Family">GERMANIC</col>
+		</row>
+		<row>
+			<col field="F_Code">ZH</col>
+			<col field="F_Name">Chinese</col>
+			<col field="F_Family">ASIAN</col>
+		</row>
+		<row>
+			<col field="F_Code">FR</col>
+			<col field="F_Name">French</col>
+			<col field="F_Family">ROMANCE</col>
+		</row>
+		<row>
+			<col field="F_Code">DE</col>
+			<col field="F_Name">German</col>
+			<col field="F_Family">GERMANIC</col>
+		</row>
+		<row>
+			<col field="F_Code">ES</col>
+			<col field="F_Name">Spanish</col>
+			<col field="F_Family">ROMANCE</col>
+		</row>
+		<row>
+			<col field="F_Code">IT</col>
+			<col field="F_Name">Italian</col>
+			<col field="F_Family">ROMANCE</col>
+		</row>
+		<row>
+			<col field="F_Code">JA</col>
+			<col field="F_Name">Japanese</col>
+			<col field="F_Family">ASIAN</col>
+		</row>
+	</data>
+  </table>
+  
+  <table name="T_Languages">
+  	<annotation>Language pairs for translation supported by the system.</annotation>
+  	<fields>
+  		<field name="F_PairID" type="char" size="4" null="false">Language pair ID = source plus target language code</field>
+  		<field name="F_SourceCode" type="char" size="2" null="false">source language code, EN,ZH</field>
+  		<field name="F_TargetCode" type="char" size="2" null="false">target language code</field>
+  		<field name="F_DisplayCode" type="string" size="8" null="false">code for display using resource bundle</field>
+  		<field name="F_TableName" type="string" size="31" null="false">table name for this pair, two pairs share the same corpus table</field>
+  		<field name="F_Sentences" type="long" default="0">number of sentence pairs for this pair</field>
+  	</fields>
+  	<primary-key name="languages_pk">
+  		<pk field="F_PairID" />
+  	</primary-key>
+  	<foreign-keys>
+  		<fk field="F_SourceCode" ref-table="T_LangCodes" ref-field="F_Code" />
+  		<fk field="F_TargetCode" ref-table="T_LangCodes" ref-field="F_Code" />
+  	</foreign-keys>
+  	<queries>
+  		<query name="SupportedPairs">
+  			<struct name="SupportedPairs">
+  				<var type="string" name="id" />
+  				<var type="string" name="name" />
+  			</struct>
+  			<annotation>Query a list of supported language pairs for translation.</annotation>
+  			<sql><![CDATA[select F_PairID,F_DisplayCode from T_Languages]]></sql>
+  		</query>
+  		<query name="TableName" return="string">
+  			<annotation>Query table name for a given language pair</annotation>
+  			<params>
+  				<param type="string" var="pair" />
+  			</params>
+  			<sql><![CDATA[select F_TableName from T_Languages where F_PairID=?1]]></sql>
+  		</query>
+  		<query name="TableNameBySourceTarget" return="string">
+  			<annotation>Query table name for a given language source and target code</annotation>
+  			<params>
+  				<param type="string" var="src" />
+  				<param type="string" var="tgt" />
+  			</params>
+  			<sql><![CDATA[select F_TableName from T_Languages where F_SourceCode=?1 and F_TargetCode=?2]]></sql>
+  		</query>
+  		<query name="Tables">
+  			<annotation>Query a list of unique tables</annotation>
+  			<sql><![CDATA[select distinct F_TableName from T_Languages]]></sql>
+  		</query>
+  	</queries>
+	<users>
+		<user type="GROUP" name="Users" right="SELECT" />
+		<user type="GROUP" name="Admins" right="ALL" />
+	</users>
+  	<data>
+  		<row>
+  			<col field="F_PairID">ENZH</col>
+  			<col field="F_SourceCode">EN</col>
+  			<col field="F_TargetCode">ZH</col>
+  			<col field="F_DisplayCode">EN-ZH</col>
+  			<col field="F_TableName">T_ENZH</col>
+  		</row>
+  		<row>
+  			<col field="F_PairID">ZHEN</col>
+  			<col field="F_SourceCode">ZH</col>
+  			<col field="F_TargetCode">EN</col>
+  			<col field="F_DisplayCode">ZH-EN</col>
+  			<col field="F_TableName">T_ENZH</col>
+  		</row>
+  	</data>
+  </table>
+
+  <table name="T_Domains">
+  	<annotation>Domain fields referenced by the corpora tables</annotation>
+  	<fields>
+  		<field name="F_DomainCode" type="char" size="2" null="false">such as IT</field>
+  		<field name="F_DomainName" type="string" size="16">name of domain</field>
+  		<field name="F_ParentDomain" type="char" size="2">hierarchical chain</field>
+  	</fields>
+  	<primary-key name="domain_pk">
+  		<pk field="F_DomainCode" />
+  	</primary-key>
+  	<queries>
+  		<query name="Domains">
+  			<annotation>Query all domains</annotation>
+  			<sql><![CDATA[select * from T_Domains]]></sql>
+  		</query>
+  	</queries>
+	<users>
+		<user type="GROUP" name="Users" right="SELECT" />
+		<user type="GROUP" name="Admins" right="ALL" />
+	</users>
+  	<data>
+  		<row>
+  			<col field="F_DomainCode">00</col>
+  			<col field="F_DomainName">General</col>
+  		</row>
+  	</data>
+  </table>
+
+	<sequence name="S_Corpora" increment="1" minvalue="1" start="1">
+		<annotation>Sequence with bigint to be used by T_ENZH.F_SID</annotation>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,UPDATE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</sequence>
+
+	<table name="T_Corpora">
+		<annotation>Summary of all corpus statistics, number of sentences</annotation>
+		<fields>
+			<field name="F_CorpusID" type="int" null="false" default="nextval('S_Corpora')">PK</field>
+			<field name="F_LangPair" type="char" size="4" null="false"/>
+			<field name="F_Domain" type="char" size="2" null="false">domain</field>
+			<field name="F_Public" type="int" default="0">number of public sentences</field>
+			<field name="F_Group" type="int" default="0">number of group sentences</field>
+			<field name="F_Private" type="int" default="0">number of private sentences</field>
+			<field name="F_Total" type="int" default="0">total of public,group and private sentences</field>
+		</fields>
+		<primary-key name="corpora_pk">
+			<pk field="F_CorpusID"/>
+		</primary-key>
+		<queries>
+			<query name="CorpusStats">
+				<annotation>Query the statistics from the T_Corpora table</annotation>
+				<struct name="CorpusTally">
+					<var type="string" name="domain"/>
+					<var type="int" name="public"/>
+					<var type="int" name="group"/>
+					<var type="int" name="private"/>
+					<var type="int" name="total"/>
+				</struct>
+				<params>
+					<param type="string" var="lang"/>
+				</params>
+				<sql><![CDATA[select f_Domain,f_Public,f_Group,f_Private,f_Total from T_Corpora where F_LangPair=?1 union select 'zz' as f_Domain,sum(f_Public),sum(f_Group),sum(f_Private),sum(f_Total) from T_Corpora where F_LangPair=?1 order by f_Domain]]></sql>
+			</query>
+		</queries>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,UPDATE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+		<data>
+			<row>
+				<col field="F_LangPair">ENZH</col>
+				<col field="F_Domain">00</col>
+				<col field="F_Public">100</col>
+				<col field="F_Group">50</col>
+				<col field="F_Private">10</col>
+				<col field="F_Total">160</col>
+			</row>
+			<row>
+				<col field="F_LangPair">ENZH</col>
+				<col field="F_Domain">IT</col>
+				<col field="F_Public">1000</col>
+				<col field="F_Group">500</col>
+				<col field="F_Private">100</col>
+				<col field="F_Total">1600</col>
+			</row>
+		</data>
+	</table>
+
+<!--
+  <table name="T_ENZHTerms">
+	<annotation>English-Chinese termbase</annotation>
+	<fields>
+	  <field name="F_EN" type="string" size="256" null="false">English term as a word or phrase</field>
+	  <field name="F_ZH" type="string" size="1024" null="false">Chinese equivalent words</field>
+	  <field name="F_Domain" type="char" size="2"/>
+	</fields>
+	<primary-key name="enzh_pk">
+	  <pk field="F_EN" />
+	</primary-key>
+  </table>
+
+  <table name="T_ZHENTerms">
+	<annotation>Chinese-English termbase</annotation>
+	<fields>
+	  <field name="F_ZH" type="string" size="256" null="false">Chinese term as a word or phrase</field>
+	  <field name="F_EN" type="string" size="1024" null="false">English equivalent words</field>
+	  <field name="F_Domain" type="char" size="2"/>
+	</fields>
+	<primary-key name="zhen_pk">
+	  <pk field="F_ZH" />
+	</primary-key>
+  </table>
+-->
+
+	<sequence name="S_Sources" increment="-1" start="-1000">
+		<annotation>Sequence starting at -1000 and decrement by 1, used by T_Sources.F_SourceID</annotation>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,UPDATE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</sequence>
+
+	<table name="T_Sources">
+		<annotation>Source of example sentences, eg. Article, or dictionary</annotation>
+		<fields>
+			<field name="F_SourceID" type="int" null="false">Source ID,-999..-1 reserved,positive for articleID,less than-999 for uploads</field>
+			<field name="F_Name" type="string" size="80">Name of article or book</field>
+			<field name="F_Date" type="date" default="now()">date of submission</field>
+			<field name="F_Format" type="char" size="3" default="'   '">file format if necessary</field>
+			<field name="F_Owner" type="int" default="0">owner or submitter of the article</field>
+			<field name="F_LangPair" type="char" size="4" default="'ENZH'"/>
+			<field name="F_Sentences" type="int" default="0"/>
+			<field name="F_Domain" type="char" size="2" default="'00'"/>
+			<field name="F_Permit" type="int" default="0"/>
+		</fields>
+		<primary-key name="sources_pk">
+			<pk field="F_SourceID" />
+		</primary-key>
+		<queries>
+			<query name="ByOwner">
+				<annotation>Query all uploads for an owner</annotation>
+				<params>
+					<param type="int" var="owner"/>
+				</params>
+				<sql><![CDATA[select * from T_Sources where F_Owner=?1 order by F_Date]]></sql>
+			</query>
+		</queries>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,DELETE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+		<data>
+			<row>
+				<col field="F_SourceID">0</col>
+				<col field="F_Name">Unknown</col>
+			</row>
+		</data>
+	</table>
+
+	<sequence name="S_ENZH" increment="1" minvalue="1" start="1" maxvalue="9223372036854775807">
+		<annotation>Sequence with bigint to be used by T_ENZH.F_SID</annotation>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,UPDATE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</sequence>
+
+	<table name="T_ENZH">
+		<annotation>English-Chinese sentences</annotation>
+		<fields>
+			<field name="F_SID" type="long" null="false" default="nextval('S_ENZH')">Sentence ID as long</field>
+			<field name="F_Source" type="string" size="2000">English sentence</field>
+			<field name="F_Target" type="string" size="2000">Chinese sentence</field>
+			<field name="F_Domain" type="char" size="2" default="'00'">domain, default=general</field>
+			<field name="F_Owner" type="int" default="0">provider of this entry</field>
+			<field name="F_Permit" type="int" default="0">0=Public,positive=GroupID,-1=Owner</field>
+			<field name="F_From" type="int" default="0">article ID if any, 0=unknown, negative from dictionaries</field>
+		</fields>
+		<primary-key name="englishchinese_pk">
+			<pk field="F_SID" />
+		</primary-key>
+		<indices>
+			<index name="ENZH_Domain_Index" field="F_Domain" />
+			<index name="ENZH_Permit_Index" field="F_Permit" />
+		</indices>
+		<queries>
+			<query name="UnitsByOwner">
+				<annotation>Query translation units by owner</annotation>
+				<struct name="Transunit">
+					<var type="long" name="sid"/>
+					<var type="string" name="source"/>
+					<var type="string" name="target"/>
+				</struct>
+				<params>
+					<param type="int" var="owner"/>
+				</params>
+				<sql><![CDATA[select F_SID,F_Source,F_Target from T_ENZH where F_Owner=?1]]></sql>
+			</query>
+		</queries>
+		<updates>
+			<update name="deleteBySource">
+				<annotation>Delete all sentences from a source</annotation>
+				<params>
+					<param type="int" var="source" />
+				</params>
+				<sql><![CDATA[delete from T_ENZH where F_From=?1]]></sql>
+			</update>
+			<update name="deleteByOwner">
+				<annotation>Delete all sentences from an owner</annotation>
+				<params>
+					<param type="int" var="owner" />
+				</params>
+				<sql><![CDATA[delete from T_ENZH where F_Owner=?1]]></sql>
+			</update>
+			<update name="deleteBySourceAndOwner">
+				<annotation>Delete all sentences by an owner from this source</annotation>
+				<params>
+					<param type="int" var="owner" />
+					<param type="int" var="source" />
+				</params>
+				<sql><![CDATA[delete from T_ENZH where F_Owner=?1 and F_From=?2]]></sql>
+			</update>
+		</updates>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,DELETE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</table>
+
+	<table name="T_ENZHX">
+		<annotation>English word index for English-Chinese sentences</annotation>
+		<fields>
+			<field name="F_Word" type="string" size="64" null="false">English word as index</field>
+			<field name="F_SID" type="long" null="false">Sentence ID</field>
+			<field name="F_Offset" type="short" default="0">Which word in the source sentence</field>
+		</fields>
+		<primary-key name="corpus_enzhx_pk">
+			<pk field="F_Word" />
+			<pk field="F_SID" />
+		</primary-key>
+		<foreign-keys>
+			<fk field="F_SID" ref-table="T_ENZH" ref-field="F_SID" ondelete="cascade" />
+		</foreign-keys>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,DELETE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</table>
+
+	<table name="T_ZHENX">
+		<annotation>Chinese word index for English-Chinese sentences</annotation>
+		<fields>
+			<field name="F_Word" type="string" size="64" null="false">Chinese word as index</field>
+			<field name="F_SID" type="long" null="false">Sentence ID</field>
+			<field name="F_Offset" type="short" default="0">Which word in the target sentence</field>
+		</fields>
+		<primary-key name="corpus_zhx_pk">
+			<pk field="F_Word" />
+			<pk field="F_SID" />
+		</primary-key>
+		<foreign-keys>
+			<fk field="F_SID" ref-table="T_ENZH" ref-field="F_SID" ondelete="cascade" />
+		</foreign-keys>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,DELETE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</table>
+
+	<table name="T_Roles">
+		<annotation>Role table</annotation>
+		<fields>
+			<field name="F_RoleID" type="char" size="1" null="false">role ID as a character</field>
+			<field name="F_RoleName" type="string" size="16">Role name</field>
+			<field name="F_Level" type="int">number for sorting purpose, the higher, the more rights, also the number of projects he can create</field>
+		</fields>
+		<primary-key name="role_pk">
+			<pk field="F_RoleID" />
+		</primary-key>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+		<data>
+			<row>
+				<col field="F_RoleID">U</col>
+				<col field="F_RoleName">Basic user</col>
+				<col field="F_Level">1</col>
+			</row>
+			<row>
+				<col field="F_RoleID">A</col>
+				<col field="F_RoleName">Advanced user</col>
+				<col field="F_Level">10</col>
+			</row>
+			<row>
+				<col field="F_RoleID">S</col>
+				<col field="F_RoleName">Super user</col>
+				<col field="F_Level">100</col>
+			</row>
+			<row>
+				<col field="F_RoleID">G</col>
+				<col field="F_RoleName">Group leader</col>
+				<col field="F_Level">1000</col>
+			</row>
+			<row>
+				<col field="F_RoleID">M</col>
+				<col field="F_RoleName">Manager</col>
+				<col field="F_Level">10000</col>
+			</row>
+		</data>
+	</table>
+
+	<sequence name="S_Groups" increment="1" minvalue="1" start="1">
+		<annotation>Sequence for T_Preferences.F_PreID with int</annotation>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,UPDATE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</sequence>
+
+	<table name="T_Groups">
+		<annotation>groups table</annotation>
+		<fields>
+			<field name="F_GroupID" type="int" null="false" default="nextval('S_Groups')">Group ID</field>
+			<field name="F_GroupName" type="string" size="16">name of the group</field>
+			<field name="F_Leader" type="int" default="0">user id for the group leader</field>
+			<field name="F_CreateDate" type="date" default="now()">create date</field>
+			<field name="F_Publicity" type="smallint" default="3">0=hidden,1=no_apply,2=apply,3=join</field>
+			<field name="F_Points" type="int" default="0">group points</field>
+			<field name="F_Members" type="int" default="0">number of members</field>
+			<field name="F_Desc" type="string" size="1024">description of the group</field>
+		</fields>
+		<primary-key name="groups_pk">
+			<pk field="F_GroupID" />
+		</primary-key>
+		<indices>
+			<index name="Groups_Name_Index" field="F_GroupName" />
+		</indices>
+		<queries>
+			<query name="PublicGroups">
+				<struct name="GroupRec">
+					<var type="int" name="id"/>
+					<var type="String" name="name"/>
+					<var type="short" name="publicity"/>
+					<var type="date" name="date"/>
+					<var type="int" name="members"/>
+					<var type="String" name="leader"/>
+				</struct>
+				<params>
+					<param type="int" var="offset"/>
+					<param type="int" var="limit"/>
+				</params>
+				<sql><![CDATA[select F_GroupID,F_GroupName,F_Publicity,F_CreateDate,F_Members,F_Realname from T_Groups G,T_Users U where G.F_Publicity>0 and G.F_Leader=U.F_UserID order by G.F_GroupName limit ?2 offset ?1]]></sql>
+			</query>
+			<query name="LatestPublicGroups">
+				<struct name="GroupRec">
+					<var type="int" name="id"/>
+					<var type="String" name="name"/>
+					<var type="short" name="publicity"/>
+					<var type="date" name="date"/>
+					<var type="int" name="members"/>
+					<var type="String" name="leader"/>
+				</struct>
+				<params>
+					<param type="int" var="offset"/>
+					<param type="int" var="limit"/>
+				</params>
+				<sql><![CDATA[select F_GroupID,F_GroupName,F_Publicity,F_CreateDate,F_Members,U.F_Realname from T_Groups G,T_Users U where G.F_Publicity>0 and G.F_Leader=U.F_UserID order by G.F_CreateDate desc limit ?2 offset ?1]]></sql>
+			</query>
+			<query name="LargestPublicGroups">
+				<struct name="GroupRec">
+					<var type="int" name="id"/>
+					<var type="String" name="name"/>
+					<var type="short" name="publicity"/>
+					<var type="date" name="date"/>
+					<var type="int" name="members"/>
+					<var type="String" name="leader"/>
+				</struct>
+				<params>
+					<param type="int" var="offset"/>
+					<param type="int" var="limit"/>
+				</params>
+				<sql><![CDATA[select F_GroupID,F_GroupName,F_Publicity,F_CreateDate,F_Members,U.F_Realname from T_Groups G,T_Users U where G.F_Publicity>0 and G.F_Leader=U.F_UserID order by G.F_Members desc limit ?2 offset ?1]]></sql>
+			</query>
+		</queries>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,UPDATE,DELETE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+		<data>
+			<row>
+				<col field="F_GroupID">0</col>
+				<col field="F_GroupName">Public</col>
+				<col field="F_Desc">Everybody is in this group by default.</col>
+			</row>
+			<row>
+				<col field="F_GroupName">First Group</col>
+				<col field="F_Leader">1</col>
+				<col field="F_Desc">My first group</col>
+			</row>
+		</data>
+	</table>
+
+	<sequence name="S_Users" increment="1" minvalue="1" start="1">
+		<annotation>Sequence for T_Users.F_UserID with int</annotation>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,UPDATE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</sequence>
+
+	<table name="T_Users">
+		<annotation>Users table</annotation>
+		<fields>
+			<field name="F_UserID" type="int" null="false" default="nextval('S_Users')">auto increment user ID</field>
+			<field name="F_Username" type="string" size="32" unique="true" null="false">unique login name</field>
+			<field name="F_Realname" type="string" size="32" null="false">real name or nickname</field>
+			<field name="F_Sex" type="char" size="1" default="'M'">Male or Female</field>
+			<field name="F_Password" type="string" size="32" null="false">MD5 passcode</field>
+			<field name="F_Regdate" type="date" default="now()">register date</field>
+			<field name="F_Birthday" type="date">birthdate YYYYMMDD</field>
+			<field name="F_Membership" type="char" size="1" default="'T'">Translator,Company,etc</field>
+			<field name="F_Role" type="char" size="1" default="'U'">Role ID</field>
+			<field name="F_Points" type="int" default="100">Number of points the user can buy</field>
+			<field name="F_Credits" type="int" default="0">Special points for ranking</field>
+			<field name="F_Email" type="string" size="80" null="false">email address</field>
+			<field name="F_Mobile" type="string" size="80">mobile phone number</field>
+			<field name="F_IdType" type="char" size="2">Identity type, ID, PP, etc</field>
+			<field name="F_IdNumber" type="string" size="20">Identity number</field>
+			<field name="F_Question" type="string" size="128">question given by user</field>
+			<field name="F_Answer" type="string" size="16">answer to the question for passcode reset</field>
+			<field name="F_State" type="char" size="1" default="'A'">Active, Disabled, Expired</field>
+			<field name="F_Work" type="int" default="0">Article ID the user is working on</field>
+			<field name="F_Group" type="int" default="0">group the user joined</field>
+			<field name="F_LastVisit" type="date" default="now()">date of last visit</field>
+			<field name="F_VisitCount" type="int" default="0">number of visits</field>
+			<field name="F_Shared" type="int" default="0">number of shared sentences</field>
+		</fields>
+		<primary-key name="users_pk">
+			<pk field="F_UserID" />
+		</primary-key>
+		<foreign-keys>
+			<fk field="F_Role" ref-table="T_Roles" ref-field="F_RoleID" />
+			<fk field="F_Group" ref-table="T_Groups" ref-field="F_GroupID" />
+		</foreign-keys>
+		<indices>
+			<index name="UserNameIndex" field="F_Username" />
+			<index name="UserGroupIndex" field="F_Group" />
+		</indices>
+		<queries>
+			<query name="Username" prefix="check" return="int" default="0">
+				<annotation>Check whether a username exists in the table. It returns 1 if found, otherwise 0.</annotation>
+				<params>
+					<param type="String" var="uname"/>
+				</params>
+				<sql><![CDATA[select count(*) from T_Users where F_Username=?1]]></sql>
+			</query>
+			<query name="Login" return="self">
+				<annotation>Query a record for login, must match username and password.</annotation>
+				<params>
+					<param type="String" var="uname"/>
+					<param type="String" var="pcode"/>
+				</params>
+				<sql><![CDATA[select * from T_Users where F_Username=?1 and F_Password=?2]]></sql>
+			</query>
+			<query name="ByUsername" return="self">
+				<annotation>Query a unique record by username</annotation>
+				<params>
+					<param type="String" var="uname"/>
+				</params>
+				<sql><![CDATA[select * from T_Users where F_Username=?1]]></sql>
+			</query>
+			<query name="ByGroup">
+				<annotation>Query all users in a given group</annotation>
+				<params>
+					<param type="int" var="group"/>
+				</params>
+				<sql><![CDATA[select * from T_Users where F_Group=?1 order by F_Username]]></sql>
+			</query>
+			<query name="NameByID" return="string">
+				<annotation>Query a user's name by his ID</annotation>
+				<params>
+					<param type="int" var="id" />
+				</params>
+				<sql><![CDATA[select F_Username from T_Users where F_UserID=?1]]></sql>
+			</query>
+   			<query name="Projects" return="int" prefix="count">
+   				<annotation>Count the number of projects the author created</annotation>
+   				<params>
+   					<param type="int" var="user"/>
+   				</params>
+   				<sql><![CDATA[select count(*) from T_Projects where F_Creator=?1]]></sql>
+   			</query>
+   			<query name="Articles" return="int" prefix="count">
+   				<annotation>Count the number of articles in all projects the author uploaded</annotation>
+   				<params>
+   					<param type="int" var="user"/>
+   				</params>
+   				<sql><![CDATA[select count(*) from T_Articles A,T_Projects P where P.F_Creator=?1 and A.F_Project=P.F_ProjectID]]></sql>
+   			</query>
+   			<query name="Translations" return="int" prefix="count">
+   				<annotation>Count the number of articles translated by the author</annotation>
+   				<params>
+   					<param type="int" var="user"/>
+   				</params>
+   				<sql><![CDATA[select count(*) from T_Articles where F_Translator=?1 and F_Progress>0.9]]></sql>
+   			</query>
+   			<query name="GroupName" return="String">
+   				<annotation>Query the group name of group the user joined</annotation>
+   				<params>
+   					<param type="int" var="group"/>
+   				</params>
+   				<sql><![CDATA[select F_GroupName from T_Groups where F_GroupID=?1]]></sql>
+   			</query>
+			<query name="LangPairByTranslator">
+				<annotation>Query language pairs a translator has done</annotation>
+				<struct name="LangPair">
+					<var type="String" name="lp"/>
+				</struct>
+				<params>
+					<param type="int" var="translator"/>
+				</params>
+				<sql><![CDATA[select distinct F_LangPair from T_Articles where F_Translator=?1]]></sql>
+			</query>
+		</queries>
+		<updates>
+			<update name="resetGroup">
+				<annotation>Reset all user group to zero for a given group to be deleted</annotation>
+				<params>
+					<param type="int" var="group"/>
+				</params>
+				<sql><![CDATA[update T_Users set F_Group=0 where F_Group=?1]]></sql>
+			</update>
+		</updates>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,UPDATE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+		<data>
+			<row>
+				<col field="F_Username">TedWen</col>
+				<col field="F_Realname">Ted</col>
+				<col field="F_Password">81DC9BDB52D04DC20036DBD8313ED055</col>
+				<col field="F_Role">G</col>
+				<col field="F_Group">1</col>
+				<col field="F_Email">tedwen@nesc.ac.uk</col>
+				<col field="F_Question">Where are you?</col>
+				<col field="F_Answer">Edinburgh</col>
+			</row>
+			<row>
+				<col field="F_Username">Alex</col>
+				<col field="F_Realname">Alex</col>
+				<col field="F_Password">E10ADC3949BA59ABBE56E057F20F883E</col>
+				<col field="F_Group">1</col>
+				<col field="F_Email">alex@allwinworld.com</col>
+				<col field="F_Question">1+1=?</col>
+				<col field="F_Answer">2</col>
+			</row>
+			<row>
+				<col field="F_Username">Kristy</col>
+				<col field="F_Realname">Kristy</col>
+				<col field="F_Password">E10ADC3949BA59ABBE56E057F20F883E</col>
+				<col field="F_Group">1</col>
+				<col field="F_Email">kristy@allwinworld.com</col>
+				<col field="F_Question">1+1=?</col>
+				<col field="F_Answer">2</col>
+			</row>
+			<row>
+				<col field="F_Username">test</col>
+				<col field="F_Realname">test</col>
+				<col field="F_Password">098F6BCD4621D373CADE4E832627B4F6</col>
+				<col field="F_Email">test@allwinworld.com</col>
+				<col field="F_Question">1+1=?</col>
+				<col field="F_Answer">2</col>
+			</row>
+		</data>
+	</table>
+
+	<sequence name="S_Preferences" increment="1" minvalue="1" start="10">
+		<annotation>Sequence for T_Preferences.F_PreID with int</annotation>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,UPDATE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</sequence>
+
+	<table name="T_Preferences">
+		<annotation>Users preferences as item key/value.</annotation>
+		<fields>
+			<field name="F_PreID" type="int" null="false" default="nextval('S_Preferences')">auto-increment id</field>
+			<field name="F_User" type="int" null="false">User ID</field>
+			<field name="F_Item" type="string" size="10" null="false">Item name to configure</field>
+			<field name="F_Value" type="string" size="10" null="false">Value of the item</field>
+		</fields>
+		<primary-key name="preferences_pk">
+			<pk field="F_PreID"/>
+		</primary-key>
+		<foreign-keys>
+			<fk field="F_User" ref-table="T_Users" ref-field="F_UserID"/>
+		</foreign-keys>
+		<indices>
+			<index name="prefuserindex" field="F_User"/>
+		</indices>
+		<queries>
+			<query name="PreferencesByUser">
+				<annotation>Get all preference settings for a user.</annotation>
+				<params>
+					<param type="int" var="user"/>
+				</params>
+				<struct name="UserPrefs">
+					<var type="string" name="item"/>
+					<var type="string" name="value"/>
+				</struct>
+				<sql><![CDATA[select F_Item,F_Value from T_Preferences where F_User=?1]]></sql>
+			</query>
+		</queries>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,UPDATE,DELETE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</table>
+
+	<table name="T_FileFormats">
+		<annotation>The supported file formats such as DOC, PDF, HTM, TXT</annotation>
+		<fields>
+			<field name="F_FormatID" type="char" size="3" null="false">format id as file extension</field>
+			<field name="F_FormatName" type="string" size="32">name of the format</field>
+		</fields>
+		<primary-key name="fileformat_pk">
+			<pk field="F_FormatID" />
+		</primary-key>
+		<queries>
+			<query name="AllFileFormats">
+				<annotation>Return all file formats</annotation>
+				<sql><![CDATA[select * from T_FileFormats]]></sql>
+			</query>
+		</queries>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+		<data>
+			<row>
+				<col field="F_FormatID">TXT</col>
+				<col field="F_FormatName">Plain text</col>
+			</row>
+			<row>
+				<col field="F_FormatID">HTM</col>
+				<col field="F_FormatName">HTML web page</col>
+			</row>
+			<row>
+				<col field="F_FormatID">DOC</col>
+				<col field="F_FormatName">Word document</col>
+			</row>
+			<row>
+				<col field="F_FormatID">PDF</col>
+				<col field="F_FormatName">Adobe PDF</col>
+			</row>
+		</data>
+	</table>
+
+	<sequence name="S_Projects" increment="1" minvalue="1" start="10">
+		<annotation>Sequence for T_Projects.F_ProjectID with int</annotation>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,UPDATE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</sequence>
+
+	<table name="T_Projects">
+		<annotation>A translation project that can involve a single article or
+			a book consisting of several articles to be translated by several people.
+		</annotation>
+		<fields>
+			<field name="F_ProjectID" type="int" null="false" default="nextval('S_Projects')">Auto project id</field>
+			<field name="F_ProjectName" type="string" size="128" null="false"/>
+			<field name="F_LangPair" type="char" size="4" null="false">Language pair for the translation</field>
+			<field name="F_Creator" type="int" null="false">FK to T_Users</field>
+			<field name="F_CreateDate" type="date" default="now()">when this project is created</field>
+			<field name="F_Progress" type="float" default="0">percent done,0.0=unstarted, 1.0 = Finished</field>
+			<field name="F_Articles" type="int" default="0">number of articles in this project</field>
+		</fields>
+		<primary-key name="project_pk">
+			<pk field="F_ProjectID" />
+		</primary-key>
+		<foreign-keys>
+			<fk field="F_LangPair" ref-table="T_Languages" ref-field="F_PairID"/>
+			<fk field="F_Creator" ref-table="T_Users" ref-field="F_UserID"/>
+		</foreign-keys>
+		<indices>
+			<index name="project_creatorindex" field="F_Creator" />
+		</indices>
+		<queries>
+			<query name="ProjectsByCreator">
+				<params>
+					<param type="int" var="creator"/>
+				</params>
+				<sql><![CDATA[select * from T_Projects where F_Creator=?1 order by F_ProjectID]]></sql>
+			</query>
+			<query name="ProjectsByMember">
+				<params>
+					<param type="int" var="member"/>
+				</params>
+				<sql><![CDATA[select distinct P.* from T_Projects P left join T_Articles A on A.F_Translator=?1 and A.F_Project=P.F_ProjectID where P.F_Creator=?1 order by F_ProjectID]]></sql>
+			</query>
+		</queries>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,UPDATE,DELETE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+		<data>
+			<row>
+				<col field="F_ProjectID">1</col>
+				<col field="F_ProjectName">Test Project 1</col>
+				<col field="F_LangPair">ENZH</col>
+				<col field="F_Creator">1</col>
+				<col field="F_Articles">1</col>
+			</row>
+		</data>
+	</table>
+
+	<sequence name="S_Articles" increment="1" minvalue="1" start="10">
+		<annotation>Sequence for T_Articles.F_ArticleID with int</annotation>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,UPDATE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</sequence>
+
+	<table name="T_Articles">
+		<annotation>Uploaded articles of all users. It can be a standalone article, or a chapter of a book.</annotation>
+		<fields>
+			<field name="F_ArticleID" type="int" null="false" default="nextval('S_Articles')">ID of article as a long</field>
+			<field name="F_Project" type="int" null="false">Project ID in T_Projects </field>
+			<field name="F_Title" type="string" size="256" null="false">article title</field>
+			<field name="F_Sentences" type="int" default="0">number of sentences in the article</field>
+			<field name="F_LangPair" type="char" size="4" null="false">Language pair for the translation</field>
+			<field name="F_Translator" type="int" null="false">who is working on this article</field>
+			<field name="F_UploadDate" type="date" default="now()">upload date</field>
+			<field name="F_Paragraph" type="int" default="-1">the paragraph index (not id) currently worked on</field>
+			<field name="F_StartDate" type="date" default="now()">when to start translation</field>
+			<field name="F_Progress" type="float" default="0">percent done,0.0=unstarted, 1.0 = Finished</field>
+			<field name="F_FileFormat" type="char" size="3" default="'TXT'">file format</field>
+			<field name="F_Filename" type="string" size="128">uploaded filename</field>
+		</fields>
+		<primary-key name="articles_pk">
+			<pk field="F_ArticleID" />
+		</primary-key>
+		<foreign-keys>
+			<fk field="F_Translator" ref-table="T_Users" ref-field="F_UserID" />
+			<fk field="F_FileFormat" ref-table="T_FileFormats" ref-field="F_FormatID" />
+			<fk field="F_Project" ref-table="T_Projects" ref-field="F_ProjectID" ondelete="cascade" />
+			<fk field="F_LangPair" ref-table="T_Languages" ref-field="F_PairID"/>
+		</foreign-keys>
+		<indices>
+			<index name="idx_articles_project" field="F_Project" />
+			<index name="idx_articles_translator" field="F_Translator" />
+		</indices>
+		<queries>
+			<query name="ByProject">
+				<params>
+					<param type="int" var="pid"/>
+				</params>
+				<sql><![CDATA[select * from T_Articles where F_Project=?1 order by F_ArticleID]]></sql>
+			</query>
+			<query name="ByTranslator">
+				<params>
+					<param type="int" var="uid"/>
+				</params>
+				<sql><![CDATA[select * from T_Articles where F_Translator=?1 order by F_ArticleID]]></sql>
+			</query>
+			<query name="Sentences" prefix="count" return="int">
+				<annotation>Count the number of sentences for this article</annotation>
+				<params>
+					<param type="int" var="aid"/>
+				</params>
+				<sql><![CDATA[select count(*) from T_Sentences where F_Article=?1]]></sql>
+			</query>
+			<query name="Translations" prefix="count" return="int">
+				<annotation>Count the number of translated sentences for this article</annotation>
+				<params>
+					<param type="int" var="aid"/>
+				</params>
+				<sql><![CDATA[select count(*) from T_Sentences where F_Article=?1 and F_Translation is not null]]></sql>
+			</query>
+		</queries>
+		<updates>
+			<update name="updateParagraph">
+				<annotation>Update the F_Paragraph field</annotation>
+				<params>
+					<param type="int" var="aid"/>
+					<param type="long" var="paraid"/>
+				</params>
+				<sql><![CDATA[update T_Articles set F_Paragraph=?2 where F_ArticleID=?1]]></sql>
+			</update>
+			<update name="updateSentences">
+				<annotation>Update the F_Sentences field by counting sentences in T_Sentences table</annotation>
+				<params>
+					<param type="int" var="aid"/>
+				</params>
+				<sql><![CDATA[update T_Articles set F_Sentences=(select count(*) from T_Sentences where F_Article=?1) where F_ArticleID=?1]]></sql>
+			</update>
+		</updates>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,UPDATE,DELETE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+		<data>
+			<row>
+				<col field="F_ArticleID">1</col>
+				<col field="F_Project">1</col>
+				<col field="F_Title">Artice I for project 1</col>
+				<col field="F_LangPair">ENZH</col>
+				<col field="F_Translator">1</col>
+				<col field="F_Filename">test.txt</col>
+			</row>
+		</data>
+	</table>
+
+	<sequence name="S_Paragraphs" increment="1" minvalue="1" start="10" maxvalue="9223372036854775807">
+		<annotation>Sequence with bigint</annotation>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,UPDATE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</sequence>
+
+	<table name="T_Paragraphs">
+		<annotation>Paragraphs of each article</annotation>
+		<fields>
+			<field name="F_ParagraphID" type="long" null="false" default="nextval('S_Paragraphs')">Global paragraph ID</field>
+			<field name="F_Article" type="int" null="false">FK to article id</field>
+			<field name="F_StartPos" type="int">starting position of paragraph in original file</field>
+			<field name="F_EndPos" type="int">ending position</field>
+		</fields>
+		<primary-key name="paragraph_pk">
+			<pk field="F_ParagraphID" />
+		</primary-key>
+		<foreign-keys>
+			<fk field="F_Article" ref-table="T_Articles" ref-field="F_ArticleID" ondelete="cascade" />
+		</foreign-keys>
+		<indices>
+			<index name="paragraph_article_index" field="F_Article"/>
+		</indices>
+		<queries>
+			<query name="ByArticle">
+				<annotation>Query all paragraphs in an article</annotation>
+				<params>
+					<param type="int" var="article"/>
+				</params>
+				<sql><![CDATA[select * from T_Paragraphs where F_Article=?1 order by F_ParagraphID]]></sql>
+			</query>
+			<query name="Paragraphs" prefix="count" return="int">
+				<annotation>Count number of paragraphs for an article</annotation>
+				<params>
+					<param type="int" var="article"/>
+				</params>
+				<sql><![CDATA[select count(*) from T_Paragraphs where F_Article=?1 order by F_ParagraphID]]></sql>
+			</query>
+		</queries>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,UPDATE,DELETE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+		<data>
+			<row>
+				<col field="F_ParagraphID">1</col>
+				<col field="F_Article">1</col>
+				<col field="F_StartPos">1</col>
+				<col field="F_EndPos">100</col>
+			</row>
+		</data>
+	</table>
+
+	<sequence name="S_Sentences" increment="1" minvalue="1" start="10" maxvalue="9223372036854775807">
+		<annotation>Sequence for sentence PK with bigint</annotation>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,UPDATE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+	</sequence>
+
+	<table name="T_Sentences">
+		<annotation>Sentences of each article</annotation>
+		<fields>
+			<field name="F_SentenceID" type="long" null="false" default="nextval('S_Sentences')">PK ID</field>
+			<field name="F_Article" type="int" null="false">FK to article id</field>
+			<field name="F_Paragraph" type="long" null="false">FK to paragraph</field>
+			<field name="F_Sequence" type="float" null="false">order of sentence, 1,1.5,2,3..</field>
+			<field name="F_StartPos" type="int">starting position of sentence in original file</field>
+			<field name="F_EndPos" type="int">ending position</field>
+			<field name="F_Sentence" type="string" size="1024" null="false"></field>
+			<field name="F_Translation" type="string" size="1024"></field>
+		</fields>
+		<primary-key name="sentence_pk">
+			<pk field="F_SentenceID" />
+		</primary-key>
+		<foreign-keys>
+			<fk field="F_Article" ref-table="T_Articles" ref-field="F_ArticleID" ondelete="cascade" />
+<!--			<fk field="F_Paragraph" ref-table="T_Paragraphs" ref-field="F_ParagraphID" />-->
+		</foreign-keys>
+		<indices>
+			<index name="sentence_article_index" field="F_Article"/>
+			<index name="sentence_paragraph_index" field="F_Paragraph"/>
+		</indices>
+		<queries>
+			<query name="ByArticle">
+				<annotation>Query all sentences in an article</annotation>
+				<params>
+					<param type="int" var="article"/>
+				</params>
+				<sql><![CDATA[select * from T_Sentences where F_Article=?1 order by F_Sequence]]></sql>
+			</query>
+			<query name="ByParagraph">
+				<annotation>Query all sentences of a paragraph in an article</annotation>
+				<params>
+					<param type="long" var="para"/>
+				</params>
+				<sql><![CDATA[select * from T_Sentences where F_Paragraph=?1 order by F_Sequence]]></sql>
+			</query>
+			<query name="ByArticle" prefix="count" return="int">
+				<annotation>Count the number of sentences for an article</annotation>
+				<params>
+					<param type="int" var="aid"/>
+				</params>
+				<sql><![CDATA[select count(*) from T_Sentences where F_Article=?1]]></sql>
+			</query>
+			<query name="TranslationsByArticle" prefix="count" return="int">
+				<annotation>Count the number of translated sentences for an article</annotation>
+				<params>
+					<param type="int" var="aid"/>
+				</params>
+				<sql><![CDATA[select count(*) from T_Sentences where F_Article=?1 and F_Translation is not null]]></sql>
+			</query>
+		</queries>
+		<updates>
+			<update name="updateArticleProgress">
+				<annotation>Update the T_Articles.F_Progress</annotation>
+				<params>
+					<param type="int" var="aid"/>
+					<param type="float" var="progress"/>
+				</params>
+				<sql><![CDATA[update T_Articles set F_Progress=?2 where F_ArticleID=?1]]></sql>
+			</update>
+		</updates>
+		<users>
+			<user type="GROUP" name="Users" right="SELECT,INSERT,UPDATE,DELETE" />
+			<user type="GROUP" name="Admins" right="ALL" />
+		</users>
+		<data>
+			<row>
+				<col field="F_Article">1</col>
+				<col field="F_Paragraph">1</col>
+				<col field="F_Sequence">1</col>
+				<col field="F_Sentence">JavaScript is not Java.</col>
+			</row>
+			<row>
+				<col field="F_Article">1</col>
+				<col field="F_Paragraph">1</col>
+				<col field="F_Sequence">1.5</col>
+				<col field="F_Sentence">Java was developed at Sun Microsystems.</col>
+			</row>
+			<row>
+				<col field="F_Article">1</col>
+				<col field="F_Paragraph">1</col>
+				<col field="F_Sequence">2</col>
+				<col field="F_Sentence">JavaScript was developed at Netscape.</col>
+			</row>
+			<row>
+				<col field="F_Article">1</col>
+				<col field="F_Paragraph">1</col>
+				<col field="F_Sequence">3</col>
+				<col field="F_Sentence">Java applications are independent of a Web page whereas JavaScript programs are embedded in a Web page and must be run in a browser window.</col>
+			</row>
+			<row>
+				<col field="F_Article">1</col>
+				<col field="F_Paragraph">1</col>
+				<col field="F_Sequence">4</col>
+				<col field="F_Sentence">Java is a strongly typed language with strict guidelines while JavaScript is loosely typed and flexible.</col>
+			</row>
+			<row>
+				<col field="F_Article">1</col>
+				<col field="F_Paragraph">1</col>
+				<col field="F_Sequence">5</col>
+				<col field="F_Sentence">Java data types must be declared.</col>
+			</row>
+			<row>
+				<col field="F_Article">1</col>
+				<col field="F_Paragraph">1</col>
+				<col field="F_Sequence">6</col>
+				<col field="F_Sentence">JavaScript types such as variables, parameters, and function return types do not have to be declared.</col>
+			</row>
+			<row>
+				<col field="F_Article">1</col>
+				<col field="F_Paragraph">1</col>
+				<col field="F_Sequence">7</col>
+				<col field="F_Sentence">Java programs are compiled.</col>
+			</row>
+			<row>
+				<col field="F_Article">1</col>
+				<col field="F_Paragraph">1</col>
+				<col field="F_Sequence">8</col>
+				<col field="F_Sentence">JavaScript programs are interpreted by a JavaScript engine that lives in the browser.</col>
+			</row>
+		</data>
+	</table>
+
+</tables>
+
+</database>

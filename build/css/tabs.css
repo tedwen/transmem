@@ -1,0 +1,45 @@
+table.ptab th, table.ptab td {
+	font-size: 14px;
+}
+img {
+	border:0;
+}
+.project_tab {
+	padding: 0px;
+	background: #99cccc;
+}
+.project_tab td {
+	background: #FFFFFF;
+}
+.project_tab img,.pname {
+	cursor: hand;
+	cursor: pointer;
+}
+.prow {
+	text-align: center;
+}
+.la {
+	text-align: left;
+	padding-left: 5px;
+}
+.pheader {
+	color: #006699;
+	background: #84AACE url(/transmem/images/vbar_01.gif) repeat-x;
+	height: 20px;
+}
+div.profile {
+	background: #FFFFCC;
+	border: 1px solid #FFCC66;
+}
+div.profile table {
+	margin: 5px;
+}
+.pname {
+	color: blue;
+}
+span.atitle {
+	color: blue;
+	cursor: hand;
+	cursor: pointer;
+	text-decoration: underline;
+}

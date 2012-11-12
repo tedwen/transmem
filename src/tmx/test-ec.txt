@@ -1,0 +1,83 @@
+<RTF Preamble>
+<FontTable>
+{\fonttbl 
+{\f1 \fmodern\fprq1 \fcharset0 Courier New;}
+{\f2 \fswiss\fprq2 \fcharset0 Arial;}
+{\f3 \fcharset134 \'b7\'bd\'d5\'fd\'cb\'ae\'d6\'f9\'bc\'f2\'cc\'e5;}
+{\f4 \froman\fprq2 {\*\panose 02020603050405020304}\fcharset0 Times New Roman;}
+{\f5 \fnil\fprq2 {\*\panose 02010600030101010101}{\*\falt SimSun}\fcharset134 \'cb\'ce\'cc\'e5;}
+{\f6 \fnil\fprq2 {\*\panose 02010600030101010101}\fcharset134 @\'cb\'ce\'cc\'e5;}
+{\f7 \froman\fprq2 \fcharset238 Times New Roman CE;}
+{\f8 \froman\fprq2 \fcharset204 Times New Roman Cyr;}
+{\f9 \froman\fprq2 \fcharset161 Times New Roman Greek;}
+{\f10 \froman\fprq2 \fcharset162 Times New Roman Tur;}
+{\f11 \froman\fprq2 \fcharset177 Times New Roman (Hebrew);}
+{\f12 \froman\fprq2 \fcharset178 Times New Roman (Arabic);}
+{\f13 \froman\fprq2 \fcharset186 Times New Roman Baltic;}
+{\f14 \fnil\fprq2 {\*\falt SimSun}\fcharset0 SimSun Western;}
+{\f15 \fnil\fprq2 \fcharset0 @\'cb\'ce\'cc\'e5 Western;}
+{\f16 \fnil\fprq2 {\*\panose 02010601030101010101}\fcharset134 @\'b7\'bd\'d5\'fd\'cb\'ae\'d6\'f9\'bc\'f2\'cc\'e5;}
+{\f17 \fmodern\fprq1 \fcharset238 Courier New CE;}
+{\f18 \fmodern\fprq1 \fcharset204 Courier New Cyr;}
+{\f19 \fmodern\fprq1 \fcharset161 Courier New Greek;}
+{\f20 \fmodern\fprq1 \fcharset162 Courier New Tur;}
+{\f21 \fmodern\fprq1 \fcharset177 Courier New (Hebrew);}
+{\f22 \fmodern\fprq1 \fcharset178 Courier New (Arabic);}
+{\f23 \fmodern\fprq1 \fcharset186 Courier New Baltic;}
+{\f24 \fswiss\fprq2 {\*\panose 020b0604030504040204}\fcharset0 Tahoma;}
+{\f25 \fswiss\fprq2 \fcharset238 Tahoma CE;}
+{\f26 \fswiss\fprq2 \fcharset204 Tahoma Cyr;}
+{\f27 \fswiss\fprq2 \fcharset161 Tahoma Greek;}
+{\f28 \fswiss\fprq2 \fcharset162 Tahoma Tur;}
+{\f29 \fswiss\fprq2 \fcharset177 Tahoma (Hebrew);}
+{\f30 \fswiss\fprq2 \fcharset178 Tahoma (Arabic);}
+{\f31 \fswiss\fprq2 \fcharset186 Tahoma Baltic;}}
+<StyleSheet>
+{\stylesheet 
+{\St \s0 {\StN Normal}}
+{\St \cs1 {\StB \v\f1\fs24\sub\cf12 }{\StN tw4winMark}}
+{\St \cs2 {\StB \cf4\fs40\f1 }{\StN tw4winError}}
+{\St \cs3 {\StB \f1\cf11\lang1024 }{\StN tw4winPopup}}
+{\St \cs4 {\StB \f1\cf10\lang1024 }{\StN tw4winJump}}
+{\St \cs5 {\StB \f1\cf15\lang1024 }{\StN tw4winExternal}}
+{\St \cs6 {\StB \f1\cf6\lang1024 }{\StN tw4winInternal}}
+{\St \cs7 {\StB \cf2 }{\StN tw4winTerm}}
+{\St \cs8 {\StB \f1\cf13\lang1024 }{\StN DO_NOT_TRANSLATE}}
+{\St \cs9 \additive {\StN Default Paragraph Font}}}
+</RTF Preamble>
+<TrU>
+<CrD>15052007, 16:05:18
+<CrU>ALEX XU
+<Seg L=EN-US>Broadband technology can fully exploit four channelsneeded for online discussion-text, voice, video and graphics
+<Seg L=ZH-CN>{\f5 宽带技术可充分用以网上的讨论所需要的四个渠道}{\f24 \emdash }{\f5 文本、语音、影像和图形}
+</TrU>
+<TrU>
+<CrD>15052007, 16:09:27
+<CrU>ALEX XU
+<Seg L=EN-US>But recently developed process for reproducing texts and illustrations, however, are no longer dependent on the mechanical concept of pressure or even on the material concept of colouring agent.
+<Seg L=ZH-CN>{\fs22 但是，近年来发展的生产文本和图画的程}序已不再依赖于压力这一机械概念，甚至不再依赖颜料这一物质概念。
+</TrU>
+<TrU>
+<CrD>15052007, 16:09:37
+<CrU>ALEX XU
+<Seg L=EN-US>However, if there is any discrepancy between the Chinese version and a version in any other language, the Chinese version shall prevail
+<Seg L=ZH-CN>{\f5 但是}{\f4 ,}{\f5 本合同的中文文本和其他文本若存在不一致之处}{\f4 ,}{\f5 则须以中文文本为准。}
+</TrU>
+<TrU>
+<CrD>15052007, 16:10:02
+<CrU>ALEX XU
+<Seg L=EN-US>In addition to religious texts there are documents on history, economics, society, customs, literature, art, geography, mathematics and medicine.
+<Seg L=ZH-CN>除了佛教经文外，还包括历史、经济、社会、风俗、文学、艺术、地理、数学和医学的文本。
+</TrU>
+<TrU>
+<CrD>15052007, 16:10:06
+<CrU>ALEX XU
+<Seg L=EN-US>printing should probably now be defined as any of several techniques for reproducing texts and illustrations, in black and in colour, on a durable surface and in a desired number of identical copies.
+<Seg L=ZH-CN>{\f5 印刷现在也许应定义为用黑色或彩色，在一耐用持久的表面，生产所想要的数量的文本和图画的各种技术。}{\f4  }
+</TrU>
+<TrU>
+<CrD>15052007, 16:10:33
+<CrU>ALEX XU
+<Seg L=EN-US>The publication makes available for the first time the most complete and authoritative English language text of the legislation of China and contains about 1,184 pieces of legislation.
+<Seg L=ZH-CN>{\f5 本汇编是第一部最详尽、最权威的中国法律的英语文本汇编}{\f4 ,}{\f5 包含}{\f4 1,184 }{\f5 个法律法规。}{\f4  }
+</TrU>

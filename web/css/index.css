@@ -1,0 +1,37 @@
+#gmenu {
+	position : relative;
+	margin : 0;
+	padding-left : 0;
+	padding-bottom : 28px;
+	border-bottom : 1px solid #B0DDFD;
+}
+#gmenu a:link, #gmenu a:visited {
+	background : #B0DDFD;
+	color : #336699;
+	float : left;
+	font-size : small;
+	font-weight : bold;
+	margin-right : 2px;
+	padding : 5px 10px 5px 10px;
+	border-right : 1px solid blue;
+	border-bottom : 1px solid blue;
+	text-decoration : none;
+}
+#gmenu ul, #gmenu li {
+	display : inline;
+	list-style-type : none;
+}
+#gmenu a:hover	{
+	background : #CDEBFE;
+}
+
+DIV.ehFooter 			{width:760;	text-align: center;}
+DIV.ehFooter ul 		{list-style: none;	margin: 0px;padding: 0;}
+DIV.ehFooter li 		{display: inline;	margin: 0;	padding: 0 2px 0 0;}
+DIV.ehFooter a 			{color:#427EAC;font-size:11px;}
+
+DIV.ehFooter #right		{float:right; width:250px; text-align:right }
+DIV.ehFooter #right	h4	{color:#A7A7A7; font-size:10px; font-weight:normal}
+DIV.ehFooter #left		{float:left; width:450px; color:#A7A7A7; font-size:10px; text-align:left;}
+DIV.ehFooter #left a	{color:#A7A7A7; font-size:10px}
+DIV.ehFooter #left h5	{color:#A7A7A7; font-size:10px; font-weight:normal}

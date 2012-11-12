@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="GBK" ?>
+<terms class="domain">
+<term code="00">
+	<phrase lang="EN">General</phrase>
+	<phrase lang="ZH">通用</phrase>
+</term>
+<term code="EE">
+	<phrase lang="EN">Electric/Electronics</phrase>
+	<phrase lang="ZH">电子</phrase>
+</term>
+<term code="FL">
+	<phrase lang="EN">Law</phrase>
+	<phrase lang="ZH">法律</phrase>
+</term>
+<term code="FZ">
+	<phrase lang="EN">Textile</phrase>
+	<phrase lang="ZH">纺织</phrase>
+</term>
+<term code="HB">
+	<phrase lang="EN">Environment</phrase>
+	<phrase lang="ZH">环保</phrase>
+</term>
+<term code="HK">
+	<phrase lang="EN">Avigation</phrase>
+	<phrase lang="ZH">航空航天</phrase>
+</term>
+<term code="HX">
+	<phrase lang="EN">Chemistry</phrase>
+	<phrase lang="ZH">化学</phrase>
+</term>
+<term code="IT">
+	<phrase lang="EN">Informatics</phrase>
+	<phrase lang="ZH">信息</phrase>
+</term>
+<term code="JM">
+	<phrase lang="EN">Trade</phrase>
+	<phrase lang="ZH">经贸</phrase>
+</term>
+<term code="JR">
+	<phrase lang="EN">Finance</phrase>
+	<phrase lang="ZH">金融保险</phrase>
+</term>
+<term code="JT">
+	<phrase lang="EN">Transportation</phrase>
+	<phrase lang="ZH">交通运输</phrase>
+</term>
+<term code="JX">
+	<phrase lang="EN">Mechanics</phrase>
+	<phrase lang="ZH">机械</phrase>
+</term>
+<term code="JY">
+	<phrase lang="EN">Education</phrase>
+	<phrase lang="ZH">教育</phrase>
+</term>
+<term code="JZ">
+	<phrase lang="EN">Architecture</phrase>
+	<phrase lang="ZH">建筑</phrase>
+</term>
+<term code="LY">
+	<phrase lang="EN">Tourism</phrase>
+	<phrase lang="ZH">旅游</phrase>
+</term>
+<term code="NY">
+	<phrase lang="EN">Energy</phrase>
+	<phrase lang="ZH">能源</phrase>
+</term>
+<term code="QC">
+	<phrase lang="EN">Automobile</phrase>
+	<phrase lang="ZH">汽车</phrase>
+</term>
+<term code="SL">
+	<phrase lang="EN">Water</phrase>
+	<phrase lang="ZH">水利水电</phrase>
+</term>
+<term code="SP">
+	<phrase lang="EN">Food</phrase>
+	<phrase lang="ZH">食品</phrase>
+</term>
+<term code="SW">
+	<phrase lang="EN">Biology</phrase>
+	<phrase lang="ZH">生物</phrase>
+</term>
+<term code="SY">
+	<phrase lang="EN">Petroleum</phrase>
+	<phrase lang="ZH">石油</phrase>
+</term>
+<term code="TM">
+	<phrase lang="EN">Construction</phrase>
+	<phrase lang="ZH">土木工程</phrase>
+</term>
+<term code="TX">
+	<phrase lang="EN">Communication</phrase>
+	<phrase lang="ZH">通讯</phrase>
+</term>
+<term code="WJ">
+	<phrase lang="EN">Diplomacy</phrase>
+	<phrase lang="ZH">外交</phrase>
+</term>
+<term code="WX">
+	<phrase lang="EN">Literature</phrase>
+	<phrase lang="ZH">文学</phrase>
+</term>
+<term code="YJ">
+	<phrase lang="EN">Metallurgy</phrase>
+	<phrase lang="ZH">冶金</phrase>
+</term>
+ <term code="YS">
+	<phrase lang="EN">Publishing</phrase>
+	<phrase lang="ZH">印刷</phrase>
+</term>
+ <term code="YY">
+	<phrase lang="EN">Medicine</phrase>
+	<phrase lang="ZH">医药</phrase>
+</term>
+</terms>
